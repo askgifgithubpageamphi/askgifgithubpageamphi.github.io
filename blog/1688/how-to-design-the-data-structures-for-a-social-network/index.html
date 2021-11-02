@@ -1,0 +1,774 @@
+﻿
+<!doctype html>
+<html amp lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <script async src="https://cdn.ampproject.org/v0.js"></script>
+    <script async custom-element="amp-sidebar" src="https://cdn.ampproject.org/v0/amp-sidebar-0.1.js"></script>
+    <script async custom-template="amp-mustache" src="https://cdn.ampproject.org/v0/amp-mustache-0.2.js"></script>
+    <link rel="shortcut icon" href="https://shotcutdotcom.github.io/static/images/favicon.ico" type="image/png">
+    <title>&#x938;&#x93E;&#x92E;&#x93E;&#x91C;&#x93F;&#x915; &#x928;&#x947;&#x91F;&#x935;&#x930;&#x94D;&#x915; &#x915;&#x947; &#x932;&#x93F;&#x90F; &#x921;&#x947;&#x91F;&#x93E; &#x938;&#x902;&#x930;&#x91A;&#x928;&#x93E;&#x913;&#x902; &#x915;&#x94B; &#x915;&#x948;&#x938;&#x947; &#x921;&#x93F;&#x91C;&#x93C;&#x93E;&#x907;&#x928; &#x915;&#x930;&#x947;&#x902; - &#x92C;&#x94D;&#x932;&#x949;&#x917; - &#x938;&#x92D;&#x940; &#x938;&#x92E;&#x92F; &#x915;&#x947; &#x938;&#x930;&#x94D;&#x935;&#x936;&#x94D;&#x930;&#x947;&#x937;&#x94D;&#x920; &#x92A;&#x922;&#x93C;&#x947;&#x902; AskGif</title>
+
+    <link rel="canonical" href="https://askgif.com/blog/1688/how-to-design-the-data-structures-for-a-social-network/?lang=hi">
+
+    <meta name="viewport" content="width=device-width,minimum-scale=1,initial-scale=1">
+    <script type="application/ld+json">
+        {
+        "@context": "http://schema.org",
+        "@type": "NewsArticle",
+        "mainEntityOfPage": "https://askgif.com/",
+        "headline": "AskGif",
+        "datePublished": "2020/11/20",
+        "dateModified":  "2020/11/20",
+        "description": "&#x907;&#x938; &#x938;&#x93E;&#x92E;&#x93E;&#x91C;&#x93F;&#x915; &#x928;&#x947;&#x91F;&#x935;&#x930;&#x94D;&#x915; &#x915;&#x947; &#x932;&#x93F;&#x90F; &#x921;&#x947;&#x91F;&#x93E; &#x938;&#x902;&#x930;&#x91A;&#x928;&#x93E;&#x913;&#x902; &#x915;&#x94B; &#x915;&#x948;&#x938;&#x947; &#x921;&#x93F;&#x91C;&#x93C;&#x93E;&#x907;&#x928; &#x915;&#x930;&#x947;&#x902; &#x92C;&#x94D;&#x932;&#x949;&#x917; &#x915;&#x94B; &#x938;&#x93E;&#x91D;&#x93E; &#x915;&#x930;&#x947;&#x902; &#x914;&#x930; &#x905;&#x927;&#x93F;&#x915; &#x916;&#x94B;&#x91C;&#x947;&#x902;",
+        "author": {
+        "@type": "Person",
+        "name": "Sumit Chourasia"
+        },
+        "publisher": {
+        "@type": "Organization",
+        "name": "Askgif",
+        "logo": {
+        "@type": "ImageObject",
+        "url": "https://raw.githubusercontent.com/sumitc91/data/master/askgif-static/askgif_logo.png"
+        }
+        },
+        "image": {
+        "@type": "ImageObject",
+        "url": "https://raw.githubusercontent.com/sumitc91/AmpImage/main/Blogs/031621dc-30c0-4e0d-ba31-1f20a3884f5c.jpg",
+        "height": 1280,
+        "width": 857
+        }
+        }
+    </script>
+    <style amp-boilerplate>
+        body {
+            -webkit-animation: -amp-start 8s steps(1, end) 0s 1 normal both;
+            -moz-animation: -amp-start 8s steps(1, end) 0s 1 normal both;
+            -ms-animation: -amp-start 8s steps(1, end) 0s 1 normal both;
+            animation: -amp-start 8s steps(1, end) 0s 1 normal both
+        }
+
+        @-webkit-keyframes -amp-start {
+            from {
+                visibility: hidden
+            }
+
+            to {
+                visibility: visible
+            }
+        }
+
+        @-moz-keyframes -amp-start {
+            from {
+                visibility: hidden
+            }
+
+            to {
+                visibility: visible
+            }
+        }
+
+        @-ms-keyframes -amp-start {
+            from {
+                visibility: hidden
+            }
+
+            to {
+                visibility: visible
+            }
+        }
+
+        @-o-keyframes -amp-start {
+            from {
+                visibility: hidden
+            }
+
+            to {
+                visibility: visible
+            }
+        }
+
+        @keyframes -amp-start {
+            from {
+                visibility: hidden
+            }
+
+            to {
+                visibility: visible
+            }
+        }
+    </style>
+    <noscript>
+        <style amp-boilerplate>
+            body {
+                -webkit-animation: none;
+                -moz-animation: none;
+                -ms-animation: none;
+                animation: none
+            }
+        </style>
+    </noscript>
+    <style amp-custom=''>
+        * {
+            box-sizing: border-box;
+            font-family: 'Roboto';
+            transition: all 0.2s linear;
+            font-size: 16px;
+        }
+
+        html,
+        body {
+            margin: 0px;
+            padding: 0px;
+        }
+
+        .content-width {
+            width: 80%;
+        }
+
+        .content {
+            margin: 0 auto;
+            padding: 50px 0px;
+            line-height: 160%;
+        }
+
+        h1 {
+            font-size: 240%;
+            line-height: 120%;
+            margin: 20px 0px;
+        }
+
+        h2 {
+            font-size: 140%;
+            margin: 30px 0px;
+        }
+
+        .clearfix {
+            clear: both;
+        }
+
+        .subtext {
+            text-align: left;
+            font-weight: 400;
+            color: #a5a5a5;
+            font-size: 90%;
+        }
+
+        .branding {
+            font-size: 90%;
+            color: #fff;
+        }
+
+            .branding a {
+                color: inherit;
+            }
+
+                .branding a:hover {
+                    color: #19B5FE;
+                }
+
+        .button {
+            padding: 10px 15px;
+            text-decoration: none;
+            color: #fff;
+            background: #19B5FE;
+            font-weight: 700;
+            text-align: center;
+        }
+
+            .button:hover {
+                background: #3ebf43;
+            }
+
+        /* Header */
+        header,
+        footer,
+        #sidebar {
+            background: #2c3e50;
+        }
+
+        header {
+            padding: 10px 0px;
+            position: sticky;
+            top: 0;
+            z-index: 999;
+        }
+
+        #sidebar {
+            width: 300px;
+            padding: 1.5rem;
+        }
+
+        .sidebar-menu {
+            padding: 0px;
+            margin: 0px;
+        }
+
+        .amp-custom-sidebar-header {
+            line-height: 3.5rem;
+            min-height: 3.5rem;
+            color: #fff;
+        }
+
+        #sidebar-close {
+            cursor: pointer;
+        }
+
+        .sidevar-nav-item {
+            padding: 10px 0px;
+            margin: 0px;
+            display: block;
+            list-style: none;
+            color: #021425;
+            text-transform: capitalize;
+            letter-spacing: .6px;
+            line-height: 2.0625;
+            cursor: pointer;
+            text-decoration: none;
+            color: #fff;
+        }
+
+            .sidevar-nav-item:hover {
+                color: #19B5FE;
+            }
+
+        .menu {
+            display: flex;
+            justify-content: space-between;
+            margin: 0 auto;
+        }
+
+        .logo {
+            width: 200px;
+        }
+
+        #sidebar-menu-btn {
+            background: 0 0;
+            border: 0;
+            color: #fff;
+            font-weight: 700;
+            font-size: 28px;
+        }
+
+        /* POST */
+        #article-wrapper {
+            display: flex;
+            flex-direction: row;
+            flex-wrap: wrap;
+        }
+
+        .article {
+            flex-basis: 70%;
+            padding-right: 30px;
+            border-right: 1px solid #e3e3e3;
+        }
+
+            .article h1 {
+                margin-top: 0px;
+            }
+
+        .article-image,
+        .article-body {
+            margin: 20px 0px;
+            width: 340px;
+        }
+
+        .author-info {
+            color: #9d9d9d;
+            font-weight: bold;
+        }
+
+        .article a {
+            color: inherit;
+        }
+
+        a {
+            text-decoration: none;
+            color: white;
+        }
+
+        pre {
+            font-family: Consolas, Menlo, Monaco, Lucida Console, Liberation Mono, DejaVu Sans Mono, Bitstream Vera Sans Mono, Courier New, monospace, serif;
+            margin-bottom: 10px;
+            overflow: auto;
+            width: auto;
+            padding: 5px;
+            background-color: #eee;
+            width: 650px !ie7;
+            padding-bottom: 20px !ie7;
+            max-height: 600px;
+        }
+
+        .article a.button {
+            margin: 20px 10px 20px 0px;
+            display: inline-block;
+            width: 120px;
+        }
+
+            .article a.button,
+            .article a.button:hover {
+                color: #fff;
+            }
+
+        .article a:hover {
+            color: #19B5FE;
+        }
+
+        #additional-info {
+            flex-basis: 30%;
+            padding-left: 30px;
+        }
+
+            #additional-info:before {
+                display: block;
+                height: 6px;
+                background-color: #2c3e50;
+                content: ' ';
+                width: 50px;
+                margin-left: 0;
+                margin-bottom: 20px;
+            }
+
+        .promo,
+        .related-box ul li {
+            border: 1px solid #e3e3e3;
+        }
+
+        .promo {
+            padding: 10px;
+            margin-top: 20px;
+        }
+
+        .article-meta ul,
+        .related-box ul {
+            padding: 0px;
+            margin: 0px;
+        }
+
+        .related-box a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+            .related-box a.imp-link {
+                color: #3ebf43;
+                font-weight: 700;
+            }
+
+        .related-box ul li {
+            list-style: none;
+            padding: 10px;
+        }
+
+            .related-box ul li:hover,
+            .related-box a:hover {
+                text-decoration: underline;
+                background: #ebebeb;
+            }
+
+        .article-meta {
+            margin: 30px 0px;
+        }
+
+            .article-meta ul {
+                display: flex;
+                flex-direction: row;
+            }
+
+        .article .article-meta a.tag {
+            margin-right: 5px;
+            background: #ebebeb;
+            font-size: 90%;
+            text-decoration: none;
+            padding: 5px;
+            color: #414141;
+            text-transform: uppercase;
+        }
+
+        .article .article-meta .tag:hover {
+            background: #dadada;
+        }
+
+        .article-meta li {
+            list-style: none;
+        }
+
+        .blockquote-wrapper {
+            position: relative;
+        }
+
+        .blockquote {
+            margin-top: 50px;
+            margin-bottom: 50px;
+            font-size: 90%;
+            font-style: italic;
+            text-align: justify;
+        }
+
+            .blockquote::before {
+                content: "“";
+                position: absolute;
+                top: 0.25em;
+                left: -0.15em;
+                color: #e7e6e4;
+                font-size: 170px;
+                z-index: -1;
+            }
+
+        cite {
+            display: block;
+            text-align: right;
+            padding: 10px 0px;
+        }
+
+        .amp-components .component {
+            margin: 30px 0px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .color-darkturquoise {
+            background-color: darkturquoise;
+        }
+        /* Footer */
+        footer {
+            color: #fff;
+            text-align: center;
+        }
+
+        .article {
+            width: 100%;
+        }
+
+        #additional-info {
+            width: 100%;
+        }
+
+        @media only screen and (max-width: 1024px) {
+            h1 {
+                font-size: 140%;
+            }
+
+            .article {
+                padding-right: 20px;
+            }
+
+            #additional-info {
+                padding-left: 20px;
+            }
+
+            .related-box ul li, .promo p, .promo a {
+                font-size: 90%;
+            }
+        }
+
+        @media only screen and (max-width: 768px) {
+            .article,
+            #additional-info {
+                border: 0px;
+                flex-basis: 100%;
+                padding: 0px;
+                margin-bottom: 30px;
+            }
+
+            .logo {
+                width: 160px;
+            }
+
+            h1 {
+                font-size: 160%;
+            }
+
+            .article a.button,
+            .article .article-meta a.tag li {
+                font-size: 90%;
+            }
+        }
+
+        @media only screen and (max-width: 600px) {
+            h1 {
+                font-size: 120%;
+            }
+
+            .content-width {
+                width: 90%;
+            }
+
+            .content {
+                padding: 30px 0px;
+            }
+
+            .logo {
+                width: 140px;
+            }
+
+            header {
+                padding: 5px 0px;
+            }
+
+            #article-wrapper {
+                flex-direction: column;
+            }
+
+            .blockquote {
+                margin: 50px 0px;
+                font-size: 100%;
+            }
+
+            .article-meta ul {
+                flex-wrap: wrap;
+            }
+
+            .article-meta a.tag {
+                margin-bottom: 10px;
+            }
+
+            .article a.button {
+                margin: 10px 10px 10px 0px;
+            }
+
+            .branding p, .branding a {
+                font-size: 14px;
+            }
+        }
+    </style>
+    <!--sumitstart<script async custom-element="amp-auto-ads"
+            src="https://cdn.ampproject.org/v0/amp-auto-ads-0.1.js">
+    </script>
+    <script async custom-element="amp-ad" src="https://cdn.ampproject.org/v0/amp-ad-0.1.js"></script>sumitend-->
+    <script async custom-element="amp-analytics" src="https://cdn.ampproject.org/v0/amp-analytics-0.1.js"></script>
+</head>
+
+<body>
+    <!--sumitstart<amp-auto-ads type="adsense"
+                  data-ad-client="ca-pub-1068871795581451">
+    </amp-auto-ads>sumitend-->
+    <amp-analytics type="googleanalytics">
+        <script type="application/json">
+            {
+            "vars": {
+            "account": "UA-118778979-1"
+            },
+            "triggers": {
+            "trackPageview": {
+            "on": "visible",
+            "request": "pageview"
+            }
+            }
+            }
+        </script>
+    </amp-analytics>
+    <header>
+        <div class="menu content-width">
+            <div class="logo">
+                <a href="https://askgif.com/?lang=hi">
+                    AskGif<sup>TM</sup>
+                </a>
+            </div>
+            <button id="sidebar-menu-btn" on="tap:sidebar.toggle">☰</button>
+        </div>
+    </header>
+    <amp-sidebar id="sidebar" layout="nodisplay" side="right">
+        <div class="amp-custom-sidebar-header">
+            <div role="button" aria-label="close sidebar" on="tap:sidebar.toggle" tabindex="0" id="sidebar-close">✕</div>
+        </div>
+        <ul class="sidebar-menu">
+            <a href="https://askgif.com/?lang=hi" class="sidevar-nav-item">
+                <li>Gifs</li>
+            </a>
+            <a href="https://askgif.com/blog/?lang=hi" class="sidevar-nav-item">
+                <li>Blogs</li>
+            </a>
+        </ul>
+    </amp-sidebar>
+    <section class="content content-width" id="article-wrapper">
+            <div class="article">
+                <a href="/blog/1688/how-to-design-the-data-structures-for-a-social-network">
+                    <h2 class="title">
+                        &#x938;&#x93E;&#x92E;&#x93E;&#x91C;&#x93F;&#x915; &#x928;&#x947;&#x91F;&#x935;&#x930;&#x94D;&#x915; &#x915;&#x947; &#x932;&#x93F;&#x90F; &#x921;&#x947;&#x91F;&#x93E; &#x938;&#x902;&#x930;&#x91A;&#x928;&#x93E;&#x913;&#x902; &#x915;&#x94B; &#x915;&#x948;&#x938;&#x947; &#x921;&#x93F;&#x91C;&#x93C;&#x93E;&#x907;&#x928; &#x915;&#x930;&#x947;&#x902;
+                    </h2>
+                </a>
+
+                <div class="author-info">
+                    By <a href="">AskGif</a> | Nov 20, 2020
+                </div>
+                <div class="article-image">
+                    <a href="/blog/1688/how-to-design-the-data-structures-for-a-social-network/?lang=hi">
+                        <amp-img src="https://raw.githubusercontent.com/sumitc91/sumitc91.github.io/master/Blogs/031621dc-30c0-4e0d-ba31-1f20a3884f5c.jpg" layout="responsive" width="1484" height="600"></amp-img>
+                        <p class="subtext">
+                            Source : AskGif
+                        </p>
+                    </a>
+                </div>
+                <div class="article-meta">
+                    <ul class="tags">
+                        <a class="tag" href="/blog/category/tutorials/?lang=hi"><li>&#x936;&#x93F;&#x915;&#x94D;&#x937;&#x923;</li></a>
+                            <a class="tag" href="/blog/tags/design/?lang=hi"><li>&#x921;&#x93F;&#x91C;&#x93C;&#x93E;&#x907;&#x928;</li></a>
+                            <a class="tag" href="/blog/tags/interview/?lang=hi"><li>interview</li></a>
+                            <a class="tag" href="/blog/tags/system-design/?lang=hi"><li>&#x92A;&#x94D;&#x930;&#x923;&#x93E;&#x932;&#x940;-&#x915;&#x940;-&#x930;&#x942;&#x92A;&#x930;&#x947;&#x916;&#x93E;</li></a>
+                    </ul>
+                </div>
+                <div class="article-body">
+                    <p><p>चरण 1: मामलों और बाधाओं का उपयोग करें<br />आवश्यकताओं को इकट्ठा करें और समस्या को हल करें। उपयोग के मामलों और बाधाओं को स्पष्ट करने के लिए प्रश्न पूछें। मान्यताओं पर चर्चा करें।</p>
+<p>साक्षात्कारकर्ता के बिना स्पष्ट प्रश्नों को संबोधित करने के लिए, हम कुछ उपयोग मामलों और बाधाओं को परिभाषित करेंगे।</p>
+<p>बक्सों का इस्तेमाल करें<br />हम केवल निम्नलिखित उपयोग के मामलों को संभालने के लिए समस्या को हल करेंगे<br />उपयोगकर्ता किसी को खोजता है और खोजे गए व्यक्ति का सबसे छोटा रास्ता देखता है<br />सेवा की उच्च उपलब्धता है<br />अड़चनें और धारणाएँ<br />राज्य की धारणाएँ<br />यातायात समान रूप से वितरित नहीं किया जाता है<br />कुछ खोज दूसरों की तुलना में अधिक लोकप्रिय हैं, जबकि अन्य केवल एक बार निष्पादित होती हैं<br />ग्राफ डेटा एक मशीन पर फिट नहीं होगा<br />ग्राफ़ किनारों का आकार कम किया गया है<br />100 मिलियन उपयोगकर्ता<br />प्रति उपयोगकर्ता औसत 50 मित्र<br />1 बिलियन मित्र प्रति माह खोज करता है<br />अधिक पारंपरिक प्रणालियों के उपयोग का अभ्यास करें - ग्राफ़-विशिष्ट समाधानों जैसे कि ग्राफ़कॉक या नियो 4 जे जैसे ग्राफ़ डेटाबेस का उपयोग न करें</p>
+<p>उपयोग की गणना करें<br />अपने साक्षात्कारकर्ता के साथ स्पष्ट करें कि क्या आपको बैक-ऑफ-द-लिफाफा उपयोग गणनाओं को चलाना चाहिए।</p>
+<p>5 अरब मित्र संबंध<br />100 मिलियन उपयोगकर्ता * प्रति उपयोगकर्ता औसत 50 मित्र<br />प्रति सेकंड 400 खोज अनुरोध<br />आसान रूपांतरण गाइड:</p>
+<p>2.5 मिलियन सेकंड प्रति माह<br />1 प्रति सेकंड अनुरोध = प्रति माह 2.5 मिलियन अनुरोध<br />40 प्रति सेकंड अनुरोध = प्रति माह 100 मिलियन अनुरोध<br />प्रति माह 400 अनुरोध = प्रति माह 1 बिलियन अनुरोध<br />चरण 2: एक उच्च स्तरीय डिज़ाइन बनाएं<br />सभी महत्वपूर्ण घटकों के साथ एक उच्च स्तरीय डिजाइन की रूपरेखा।</p>
+<p>Imgur</p>
+<p>चरण 3: डिजाइन कोर घटक<br />प्रत्येक मुख्य घटक के लिए विवरण में गोता लगाएँ।</p>
+<p>मामले का उपयोग करें: उपयोगकर्ता किसी की खोज करता है और खोजे गए व्यक्ति के लिए सबसे छोटा रास्ता देखता है<br />अपने साक्षात्कारकर्ता के साथ स्पष्ट करें कि आपको कितने कोड लिखने की उम्मीद है।</p>
+<p>लाखों उपयोगकर्ताओं (वर्टिकल) और अरबों मित्र संबंधों (किनारों) की अड़चन के बिना, हम सामान्य BFS दृष्टिकोण के साथ इस सबसे छोटे पथ को हल कर सकते हैं:</p>
+<p>वर्ग ग्राफ़ (ग्राफ़):</p>
+<p>&nbsp; &nbsp; def shortest_path (स्वयं, स्रोत, भाग्य):<br />&nbsp; &nbsp; &nbsp; &nbsp; यदि स्रोत कोई नहीं है या कोई भी नहीं है:<br />&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; कोई नहीं<br />&nbsp; &nbsp; &nbsp; &nbsp; यदि स्रोत भाग्य है:<br />&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; वापसी [source.key]<br />&nbsp; &nbsp; &nbsp; &nbsp; prev_node_keys = self._shortest_path (स्रोत, भाग्य)<br />&nbsp; &nbsp; &nbsp; &nbsp; अगर prev_node_keys कोई नहीं है:<br />&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; कोई नहीं लौटा<br />&nbsp; &nbsp; &nbsp; &nbsp; अन्य:<br />&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; path_ids = [dest.key]<br />&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; prev_node_key = prev_node_keys [dest.key]<br />&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; जबकि prev_node_key कोई नहीं है:<br />&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; path_ids.append (prev_node_key)<br />&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; prev_node_key = prev_node_keys [prev_node_key]<br />&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; वापसी path_ids [:: - 1]</p>
+<p>&nbsp; &nbsp; def _shortest_path (स्वयं, स्रोत, भाग्य):<br />&nbsp; &nbsp; &nbsp; &nbsp; कतार = deque ()<br />&nbsp; &nbsp; &nbsp; &nbsp; queue.append (स्रोत)<br />&nbsp; &nbsp; &nbsp; &nbsp; prev_node_keys = {source.key: कोई नहीं}<br />&nbsp; &nbsp; &nbsp; &nbsp; source.visit_state = State.visited<br />&nbsp; &nbsp; &nbsp; &nbsp; जबकि कतार:<br />&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; नोड = कतार.पॉपलेफ़्ट ()<br />&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; यदि नोड भाग्य है:<br />&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; वापसी prev_node_keys<br />&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; prev_node = नोड<br />&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; नोड में adj_node.adj_nodes.values ​​() के लिए:<br />&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; अगर adj_node.visit_state == State.unvisited:<br />&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; queue.append (adj_node)<br />&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; prev_node_keys [adj_node.key] = prev_node.key<br />&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; adj_node.visit_state = State.visited<br />&nbsp; &nbsp; &nbsp; &nbsp; कोई नहीं लौटा<br />हम सभी उपयोगकर्ताओं को एक ही मशीन पर फिट करने में सक्षम नहीं होंगे, हमें उपयोगकर्ताओं को व्यक्तिगत सर्वर पर शार्प करने और उन्हें लुकअप सेवा के साथ एक्सेस करने की आवश्यकता होगी।</p>
+<p>क्लाइंट एक रिवर्स प्रॉक्सी के रूप में चल रहा है, वेब सर्वर के लिए एक अनुरोध भेजता है<br />वेब सर्वर खोज एपीआई सर्वर के अनुरोध को आगे बढ़ाता है<br />खोज एपीआई सर्वर उपयोगकर्ता ग्राफ सेवा के लिए अनुरोध को आगे बढ़ाता है<br />उपयोगकर्ता ग्राफ़ सेवा निम्नलिखित करती है:<br />व्यक्ति सर्वर जहां वर्तमान उपयोगकर्ता की जानकारी संग्रहीत है खोजने के लिए लुकअप सेवा का उपयोग करता है<br />उपयोगकर्ता के वर्तमान मित्र की सूची को पुनः प्राप्त करने के लिए उपयुक्त व्यक्ति सर्वर को ढूँढता है<br />प्रत्येक निकटवर्ती_कोड के लिए आईडी के रूप में वर्तमान उपयोगकर्ता के स्रोत और वर्तमान उपयोगकर्ता के friend_ids के रूप में एक BFS खोज चलाता है<br />दिए गए आईडी से adjacent_node प्राप्त करने के लिए:<br />उपयोगकर्ता ग्राफ़ सेवा को फिर से लुकअप सेवा के साथ संवाद करने की आवश्यकता होगी, यह निर्धारित करने के लिए कि दिए गए आईडी से मेल खाते हुए पर्सनेल सर्वर थ्रेडिकेंट_नोड (ऑप्टिमाइज़ेशन के लिए संभावित)<br />अपने साक्षात्कारकर्ता के साथ स्पष्ट करें कि आपको कितना कोड लिखना चाहिए।</p>
+<p>नोट: त्रुटि से निपटने को सरलता के लिए नीचे रखा गया है। पूछें कि क्या आपको उचित त्रुटि सौंपने का कोड चाहिए।</p>
+<p>लुकअप सेवा कार्यान्वयन:</p>
+<p>क्लास लुकअप सर्विस (ऑब्जेक्ट):</p>
+<p>&nbsp; &nbsp; def __init __ (स्व):<br />&nbsp; &nbsp; &nbsp; &nbsp; self.lookup = self._init_lookup () # कुंजी: person_id, मान: person_server</p>
+<p>&nbsp; &nbsp; def _init_lookup (स्व):<br />&nbsp; &nbsp; &nbsp; &nbsp; ...</p>
+<p>&nbsp; &nbsp; डीफ़ लुकिंग_पर्सन_सर्वर (स्वयं, person_id):<br />&nbsp; &nbsp; &nbsp; &nbsp; स्व वापस जाएँ। [person_id]<br />व्यक्ति सर्वर कार्यान्वयन:</p>
+<p>वर्ग व्यक्ति (वस्तु):</p>
+<p>&nbsp; &nbsp; def __init __ (स्व):<br />&nbsp; &nbsp; &nbsp; &nbsp; self.people = {} # कुंजी: person_id, मान: व्यक्ति</p>
+<p>&nbsp; &nbsp; def add_person (स्व, व्यक्ति):<br />&nbsp; &nbsp; &nbsp; &nbsp; ...</p>
+<p>&nbsp; &nbsp; लोगों को (स्वयं, आईडी) को हराया:<br />&nbsp; &nbsp; &nbsp; &nbsp; परिणाम = []<br />&nbsp; &nbsp; &nbsp; &nbsp; आईडी में आईडी के लिए:<br />&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; अगर स्वयं में आईडी। लोग:<br />&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; results.append (self.people [id])<br />&nbsp; &nbsp; &nbsp; &nbsp; वापसी के परिणाम<br />व्यक्ति कार्यान्वयन:</p>
+<p>वर्ग व्यक्ति (वस्तु):</p>
+<p>&nbsp; &nbsp; def __init __ (स्व, आईडी, नाम, friend_ids):<br />&nbsp; &nbsp; &nbsp; &nbsp; self.id = आईडी<br />&nbsp; &nbsp; &nbsp; &nbsp; स्व.नाम = नाम<br />&nbsp; &nbsp; &nbsp; &nbsp; self.friend_ids = friend_ids<br />उपयोगकर्ता ग्राफ़ सेवा</p></p>
+                    <!--sumitstart<amp-ad width="100vw" height="320"
+                            type="adsense"
+                            data-ad-client="ca-pub-1068871795581451"
+                            data-ad-slot="7001708883"
+                            data-auto-format="rspv"
+                            data-full-width="">
+                        <div overflow=""></div>
+                    </amp-ad>sumitend-->
+
+                    <!--sumitstart<amp-ad width="100vw" height="320"
+                            type="adsense"
+                            data-ad-client="ca-pub-1068871795581451"
+                            data-ad-slot="7001708883"
+                            data-auto-format="rspv"
+                            data-full-width="">
+                        <div overflow=""></div>
+                    </amp-ad>sumitend-->
+                </div>
+            </div>
+
+        <div class="article">
+            <div class="article-meta">
+                <ul class="tags">
+                </ul>
+
+            </div>
+        </div>
+
+        <div id="additional-info">
+                <div class="related-box promo">
+                    <a href="/blog/29/find-the-smallest-integer-which-cannot-be-represented-as-the-sum-of-any-of-the-subset-of-the-given-array./?lang=hi">
+                        <amp-img src="https://raw.githubusercontent.com/sumitc91/sumitc91.github.io/master/Blogs/ffe58c0a-0193-4745-a63a-a7eacae7af9d_images.png" layout="responsive" width="1484" height="600"></amp-img>
+                    </a>
+                    <p><a href="/blog/29/find-the-smallest-integer-which-cannot-be-represented-as-the-sum-of-any-of-the-subset-of-the-given-array./?lang=hi">find the smallest integer which cannot be represented as the sum of any of the subset of the given array.</a></p>
+                </div>
+                <div class="related-box promo">
+                    <a href="/blog/55/how-to-solve-matrix-product-parenthesizations-problem/?lang=hi">
+                        <amp-img src="https://raw.githubusercontent.com/sumitc91/sumitc91.github.io/master/Blogs/3037b8be-31fd-4f24-8882-e7babe1f2242_matrix-mult.jpg" layout="responsive" width="1484" height="600"></amp-img>
+                    </a>
+                    <p><a href="/blog/55/how-to-solve-matrix-product-parenthesizations-problem/?lang=hi">How to solve Matrix Product Parenthesizations problem?</a></p>
+                </div>
+                <div class="related-box promo">
+                    <a href="/blog/104/how-to-implement-inorder-traversal-in-binary-tree/?lang=hi">
+                        <amp-img src="https://raw.githubusercontent.com/sumitc91/sumitc91.github.io/master/Blogs/bf7ea477-0b3a-4e79-9923-feb2fab2a727_inorder_traversal in Java.jpg" layout="responsive" width="1484" height="600"></amp-img>
+                    </a>
+                    <p><a href="/blog/104/how-to-implement-inorder-traversal-in-binary-tree/?lang=hi">How to implement InOrder Traversal in Binary Tree?</a></p>
+                </div>
+                <div class="related-box promo">
+                    <a href="/blog/1700/asynchronism-tutorial/?lang=hi">
+                        <amp-img src="https://raw.githubusercontent.com/sumitc91/sumitc91.github.io/master/Blogs/icon_0b59af20-c986-4d3f-b12b-304dc3797df3.png" layout="responsive" width="1484" height="600"></amp-img>
+                    </a>
+                    <p><a href="/blog/1700/asynchronism-tutorial/?lang=hi">&#x905;&#x924;&#x941;&#x932;&#x94D;&#x92F;&#x915;&#x93E;&#x932;&#x93F;&#x915;&#x924;&#x93E; &#x91F;&#x94D;&#x92F;&#x942;&#x91F;&#x94B;&#x930;&#x93F;&#x92F;&#x932;</a></p>
+                </div>
+            <!--sumitstart<amp-ad width="100vw" height="320"
+                    type="adsense"
+                    data-ad-client="ca-pub-1068871795581451"
+                    data-ad-slot="7001708883"
+                    data-auto-format="rspv"
+                    data-full-width="">
+                <div overflow=""></div>
+            </amp-ad>sumitend-->
+
+            <div class="related-box">
+                <h3>Categories</h3>
+                <ul>
+                </ul>
+            </div>
+            <div class="related-box promo">
+                <!--sumitstart<amp-ad width="100vw" height="320"
+                        type="adsense"
+                        data-ad-client="ca-pub-1068871795581451"
+                        data-ad-slot="7001708883"
+                        data-auto-format="rspv"
+                        data-full-width="">
+                    <div overflow=""></div>
+                </amp-ad>sumitend-->
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="content content-width">
+            <div class="footer-menu">
+                <div class="footer-item">
+                    <h2>About AskGif</h2>
+                    <p>
+                        AskGif is an honest to GOD approach to bring little smile on the tense faces. Make sure to play your part in our mission
+                        to make people smile. Keep smiling and keep sharing
+                    </p><br>
+                    <a href="https://askgif.com/about-us/?lang=hi">Read More</a>
+                </div>
+                <div class="footer-item">
+                    <h2>Sarkari Support &amp; Help</h2>
+                    <ul>
+                        <li><a href="https://askgif.com/faq/?lang=hi">FAQs</a></li>
+                        <li>Have Questions? Email us @ support[at]askgif[dot]com</li>
+                    </ul>
+                </div>
+                <div class="footer-item">
+                    <h2>Follow us</h2>
+                    <p>Adhe Idhar Jao Adhe Udhar Jao</p>
+                    <p>Baki hamare piche ao</p>
+                </div>
+                <div class="footer-item">
+                    <h2>Quick Links</h2>
+                    <ul>
+                        <li><a href="https://askgif.com/?lang=en">English</a></li>
+                        <li><a href="https://askgif.com/?lang=hi">हिंदी</a></li>
+                        <li><a href="https://askgif.com/terms-of-service/?lang=hi">Terms of Service</a></li>
+                        <li><a href="https://askgif.com/privacy-policy/?lang=hi">Privacy Policy</a></li>
+                        <li><a href="https://askgif.com/editor/?lang=hi">Editor</a></li>
+                        <li><a href="https://askgif.com/contributors/?lang=hi">Developers & Contributors</a></li>
+                        <li><a href="https://askgif.com/sitemap.xml">Site Map</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="social">
+                <ul>
+                    <li><a rel="ugc nofollow" href="https://www.facebook.com/askgifdotcom/"><i class="fab fa-facebook-f"></i></a></li>
+                    <li><a rel="ugc nofollow" href="https://twitter.com/askgifdotcom"><i class="fab fa-twitter"></i></a></li>
+                    <li><a rel="ugc nofollow" href="https://www.pinterest.com/askgifdotcom/"><i class="fab fa-pinterest"></i></a></li>
+                    <li><a rel="ugc nofollow" href="https://www.instagram.com/askgifdotcom/"><i class="fab fa-instagram"></i></a></li>
+                    <li><a rel="ugc nofollow" href="https://www.tumblr.com/blog/askgifdotcom"><i class="fab fa-tumblr"></i></a></li>
+                </ul>
+            </div>
+
+            <div class="meta-content">
+                <p>Copyright 2021 | Designed by <a href="https://askgif.com/?lang=hi">Askgif</a> | Last Cached: 11/2/2021 4:58:46 PM | A</p>
+            </div>
+        </div>
+    </footer>
+</body>
+
+</html>
+
